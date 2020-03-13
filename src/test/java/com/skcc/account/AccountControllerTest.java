@@ -27,6 +27,9 @@ public class AccountControllerTest {
     @Autowired
     MockMvc mockMvc;
 
+    @Autowired
+    AccountService accountService;
+
     @Test
     @WithAnonymousUser
     public void index_anonymous() throws Exception {
@@ -66,7 +69,7 @@ public class AccountControllerTest {
         String password = "123";
         Account user = createUser(username,password);
 
-        mockMvc.perform(formLogin().user(user.getUsername()).password(user.getPassword()))
+        mockMvc.perform(formLogin().user(user.getUsername()).password(password))
                 .andDo(print())
                 .andExpect(authenticated());
     }
@@ -77,7 +80,7 @@ public class AccountControllerTest {
         String password = "123";
         Account user = createUser(username,password);
 
-        mockMvc.perform(formLogin().user(user.getUsername()).password(user.getPassword()))
+        mockMvc.perform(formLogin().user(user.getUsername()).password(password))
                 .andDo(print())
                 .andExpect(authenticated());
     }
@@ -98,7 +101,8 @@ public class AccountControllerTest {
         Account account = new Account();
         account.setUsername(username);
         account.setPassword(password);
-    return account;
+        account.setRole("USER");
+    return accountService.createNew(account);
 
     }
 
