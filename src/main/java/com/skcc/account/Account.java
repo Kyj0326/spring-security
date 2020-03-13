@@ -1,5 +1,7 @@
 package com.skcc.account;
 
+import org.springframework.security.crypto.password.PasswordEncoder;
+
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
@@ -49,7 +51,7 @@ public class Account {
     public void setRole(String role) {
         this.role = role;
     }
-    void encodePassword() {
+    void encodePassword(PasswordEncoder passwordEncoder) {
         this.password="{noop}"+this.password;
     }
 }
