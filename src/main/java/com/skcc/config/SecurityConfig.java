@@ -1,6 +1,7 @@
 package com.skcc.config;
 
 import org.springframework.context.annotation.Configuration;
+import org.springframework.security.config.annotation.authentication.builders.AuthenticationManagerBuilder;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
 import org.springframework.security.config.annotation.web.configuration.WebSecurityConfigurerAdapter;
@@ -17,7 +18,13 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
                 .anyRequest().authenticated();
         http.formLogin();
         http.httpBasic();
+    }
 
-        super.configure(http);
+    @Override
+    protected void configure(AuthenticationManagerBuilder auth) throws Exception {
+        auth.inMemoryAuthentication()                      //password 인코더임
+                .withUser("youngjae").password("{noop}123").roles("USER").and()
+                .withUser("admin").password("{noop}!@#").roles("ADMIN");
+
     }
 }
