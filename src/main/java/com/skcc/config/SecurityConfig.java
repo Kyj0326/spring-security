@@ -1,10 +1,12 @@
 package com.skcc.config;
 
+import org.springframework.boot.autoconfigure.security.servlet.PathRequest;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.security.access.expression.SecurityExpressionHandler;
 import org.springframework.security.access.hierarchicalroles.RoleHierarchyImpl;
 import org.springframework.security.config.annotation.authentication.builders.AuthenticationManagerBuilder;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
+import org.springframework.security.config.annotation.web.builders.WebSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
 import org.springframework.security.config.annotation.web.configuration.WebSecurityConfigurerAdapter;
 import org.springframework.security.core.userdetails.UserDetailsService;
@@ -21,6 +23,12 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
         DefaultWebSecurityExpressionHandler handler = new DefaultWebSecurityExpressionHandler();
         handler.setRoleHierarchy(roleHierarchy);
         return handler;
+    }
+
+    @Override
+    public void configure(WebSecurity web) throws Exception {
+//        web.ignoring().mvcMatchers("/favicon.ico");
+        web.ignoring().requestMatchers(PathRequest.toStaticResources().atCommonLocations()); // 필터가 하나도 셋팅이 안된다. 성능상 이득이 있껫죠?
     }
 
     @Override
