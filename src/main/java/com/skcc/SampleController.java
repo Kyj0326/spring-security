@@ -57,6 +57,7 @@ public class SampleController {
 //    PreProcess: SecurityContext를 설정한다.
 //    Callable: 비록 다른 쓰레드지만 그 안에서는 동일한 SecurityContext를 참조할 수 있다.
 //    PostProcess: SecurityContext를 정리(clean up)한다.
+// 뭐 딱히 설정해줄건없고 이 필터가 서로 다른 스레드에 authentication를 공유하게 해준다는 거임.
 
     @GetMapping("/async-handler")
     @ResponseBody
@@ -70,6 +71,16 @@ public class SampleController {
                 return "async-handler";
             }
         };
+    }
+
+    @GetMapping("/async-service")
+    @ResponseBody
+    public String asyncService(){
+        SecurityLog.log("MVC, before async service");
+        sampleService.asyncService();
+        SecurityLog.log("MVC, after async service");
+
+    return "Async-Service";
     }
 
 }

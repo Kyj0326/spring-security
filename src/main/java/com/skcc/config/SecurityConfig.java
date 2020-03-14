@@ -9,6 +9,7 @@ import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.builders.WebSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
 import org.springframework.security.config.annotation.web.configuration.WebSecurityConfigurerAdapter;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.web.access.expression.DefaultWebSecurityExpressionHandler;
 import org.springframework.web.servlet.mvc.support.DefaultHandlerExceptionResolver;
@@ -40,6 +41,9 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
                 .expressionHandler(expressionHandler());
         http.formLogin();
         http.httpBasic();
+
+        SecurityContextHolder.setStrategyName(SecurityContextHolder.MODE_INHERITABLETHREADLOCAL);
+        //기본은 로컬스레드 전략인데, 하위스레드 까지 공유하려면 위 전략으로 하면 된다.
     }
 
     //원래라면 AccountService를 UserDetailsService로 써라! 라고 명시를 해줘야하는데 빈으로만 등록되어있으면 UserDetailsService를 구현하고 있는거를 찾아서
